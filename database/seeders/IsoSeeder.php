@@ -83,7 +83,7 @@ class IsoSeeder extends Seeder {
         DB::table('country_currency')->truncate();
         DB::table('country_country')->truncate();
 
-        // Load Country JSON
+        // Load countries and relationships as JSON from RestCountries API
         $response = Http::get('https://restcountries.eu/rest/v2/all');
 
         if ($response->successful()) {
@@ -98,7 +98,7 @@ class IsoSeeder extends Seeder {
                 $country_model = Country::create([
                     'id'               => $country['alpha2Code'],
                     'alpha_3'          => $country['alpha3Code'],
-                    'name'             => ['en' => $country['name']],
+                    'name'             => $country['name'],
                     'native_name'      => $country['nativeName'] ?? null,
                     'capital'          => $country['capital'] ?? null,
                     'top_level_domain' => collect($country['topLevelDomain'])->first(),
@@ -113,6 +113,7 @@ class IsoSeeder extends Seeder {
                     'gini'             => $country['gini'] ?? null,
                 ]);
 
+                // Attach relations
                 $country_model->languages()->attach(Language::find(collect($country['languages'])->pluck('iso639_1')));
                 $country_model->currencies()->attach(Currency::find(collect($country['currencies'])->pluck('code')));
                 $country_model->neighbours()->attach(Country::whereIn('alpha_3', $country['borders'])->get());
@@ -121,32 +122,44 @@ class IsoSeeder extends Seeder {
 
         }
 
-        // Replace official names with more common names (short versions)
+        // Download name translations
+        $this->downloadTranslations(Country::class);
+        $this->downloadTranslations(Language::class);
+        $this->downloadTranslations(Currency::class);
 
-        $this->command->info('Loading common country names & translations...');
+    }
 
-        $languages = config('iso-countries.locales');
+    public function downloadTranslations($model): void
+    {
+        $this->command->info('Downloading translations for ' . $model);
 
-        foreach ($languages as $lang) {
+        foreach (config('iso-countries.locales') as $locale) {
 
-            $this->command->info('Loading names for locale "' . $lang . '"...');
+            $urls = [
+                Country::class => 'https://raw.githubusercontent.com/umpirsky/country-list/master/data/' . $locale . '/country.json',
+                Language::class => 'https://raw.githubusercontent.com/umpirsky/language-list/master/data/' . $locale . '/language.json',
+                Currency::class => 'https://raw.githubusercontent.com/umpirsky/currency-list/master/data/' . $locale . '/currency.json',
+            ];
 
-            $response = Http::get('https://raw.githubusercontent.com/umpirsky/country-list/master/data/' . $lang . '/country.json');
+            $this->command->info('Loading names for locale "' . $locale . '"...');
+
+            $response = Http::get($urls[$model]);
 
             if ($response->successful()) {
-                foreach ($response->json() as $iso => $name) {
-                    $country = Country::find($iso);
+                foreach ($response->json() as $id => $name) {
+                    $item = app($model)::find($id);
 
-                    if ($country) {
-                        $country->setTranslation('name', $lang, $name);
-                        $country->save();
+                    if ($item) {
+                        $item->setTranslation('name', $locale, $name);
+                        $item->save();
                     }
                 }
             }
+            else{
+                $this->command->warn('Locale not available for download!');
+            }
 
         }
-
-
     }
 
 }
