@@ -17,7 +17,10 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "illuminate/contracts": "^8.0"
+        "illuminate/contracts": "^8.0",
+        "umpirsky/country-list": "^2.0",
+        "umpirsky/currency-list": "^1.1",
+        "umpirsky/language-list": "^1.1"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
