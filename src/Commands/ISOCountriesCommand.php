@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\Skeleton\Commands;
+namespace Io238\ISOCountries\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class ISOCountriesCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-iso-countries';
 
     public $description = 'My command';
 

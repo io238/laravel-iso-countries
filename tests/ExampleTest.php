@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace Io238\ISOCountries\Tests;
 
 class ExampleTest extends TestCase
 {

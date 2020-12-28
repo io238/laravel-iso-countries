@@ -1,24 +1,24 @@
 <?php
 
-namespace Spatie\Skeleton;
+namespace Io238\ISOCountries;
 
 use Illuminate\Support\ServiceProvider;
-use Spatie\Skeleton\Commands\SkeletonCommand;
+use Io238\ISOCountries\Commands\ISOCountriesCommand;
 
-class SkeletonServiceProvider extends ServiceProvider
+class ISOCountriesServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/skeleton.php' => config_path('skeleton.php'),
+                __DIR__ . '/../config/laravel-iso-countries.php' => config_path('laravel-iso-countries.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__ . '/../resources/views' => base_path('resources/views/vendor/skeleton'),
+                __DIR__ . '/../resources/views' => base_path('resources/views/vendor/laravel-iso-countries'),
             ], 'views');
 
-            $migrationFileName = 'create_skeleton_table.php';
+            $migrationFileName = 'create_laravel_iso_countries_table.php';
             if (! $this->migrationFileExists($migrationFileName)) {
                 $this->publishes([
                     __DIR__ . "/../database/migrations/{$migrationFileName}.stub" => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
@@ -26,16 +26,16 @@ class SkeletonServiceProvider extends ServiceProvider
             }
 
             $this->commands([
-                SkeletonCommand::class,
+                ISOCountriesCommand::class,
             ]);
         }
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'skeleton');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-iso-countries');
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/skeleton.php', 'skeleton');
+        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-iso-countries.php', 'laravel-iso-countries');
     }
 
     public static function migrationFileExists(string $migrationFileName): bool

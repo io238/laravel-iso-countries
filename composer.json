@@ -1,16 +1,16 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "io238/laravel-iso-countries",
+    "description": "Countries by ISO codes with languages, currency and other meta information for Laravel.",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "io238",
+        "laravel-iso-countries"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/io238/laravel-iso-countries",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "Martin",
+            "email": "martin@io238.eu",
             "homepage": "https://spatie.be",
             "role": "Developer"
         }
@@ -25,13 +25,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src",
-            "Spatie\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Io238\\ISOCountries\\": "src",
+            "Io238\\ISOCountries\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "Io238\\ISOCountries\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -45,10 +45,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\Skeleton\\SkeletonServiceProvider"
+                "Io238\\ISOCountries\\ISOCountriesServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Spatie\\Skeleton\\SkeletonFacade"
+                "ISOCountries": "Io238\\ISOCountries\\ISOCountriesFacade"
             }
         }
     },
