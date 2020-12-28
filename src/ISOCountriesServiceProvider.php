@@ -11,12 +11,8 @@ class ISOCountriesServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                realpath(__DIR__ . '/../config/laravel-iso-countries.php') => config_path('laravel-iso-countries.php'),
+                realpath(__DIR__ . '/../config/iso-countries.php') => config_path('iso-countries.php'),
             ], 'config');
-
-            $this->publishes([
-                realpath(__DIR__ . '/../resources/views') => base_path('resources/views/vendor/laravel-iso-countries'),
-            ], 'views');
 
             $migrationFileName = 'create_laravel_iso_countries_tables.php';
             if (! $this->migrationFileExists($migrationFileName)) {
@@ -35,7 +31,7 @@ class ISOCountriesServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/laravel-iso-countries.php'), 'laravel-iso-countries');
+        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/iso-countries.php'), 'laravel-iso-countries');
     }
 
     public static function migrationFileExists(string $migrationFileName): bool
