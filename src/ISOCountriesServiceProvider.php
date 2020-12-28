@@ -31,7 +31,7 @@ class ISOCountriesServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/iso-countries.php'), 'laravel-iso-countries');
+        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/iso-countries.php'), 'iso-countries');
     }
 
     public static function migrationFileExists(string $migrationFileName): bool
