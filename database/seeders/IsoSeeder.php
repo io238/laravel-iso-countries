@@ -95,14 +95,10 @@ class IsoSeeder extends Seeder {
                     return $value === '' ? null : $value;
                 }, $country);
 
-                $translations = $country['translations'];
-                $translations = ['en' => $country['name']] + $translations; // add default name (English) to the beginning
-                unset($translations['br']); // remove 'br' (Brazil) since it's not a valid language code and 'pt' already exists
-
                 $country_model = Country::create([
                     'id'               => $country['alpha2Code'],
                     'alpha_3'          => $country['alpha3Code'],
-                    'name'             => $translations,
+                    'name'             => ['en' => $country['name']],
                     'native_name'      => $country['nativeName'] ?? null,
                     'capital'          => $country['capital'] ?? null,
                     'top_level_domain' => collect($country['topLevelDomain'])->first(),
