@@ -5,8 +5,9 @@ namespace Io238\ISOCountries;
 use Illuminate\Support\ServiceProvider;
 use Io238\ISOCountries\Commands\ISOCountriesCommand;
 
-class ISOCountriesServiceProvider extends ServiceProvider
-{
+
+class ISOCountriesServiceProvider extends ServiceProvider {
+
     public function boot()
     {
         if ($this->app->runningInConsole()) {
@@ -15,7 +16,7 @@ class ISOCountriesServiceProvider extends ServiceProvider
             ], 'config');
 
             $migrationFileName = 'create_laravel_iso_countries_tables.php';
-            if (! $this->migrationFileExists($migrationFileName)) {
+            if ( ! $this->migrationFileExists($migrationFileName)) {
                 $this->publishes([
                     realpath(__DIR__ . "/../database/migrations/{$migrationFileName}.stub") => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
                 ], 'migrations');
@@ -25,14 +26,14 @@ class ISOCountriesServiceProvider extends ServiceProvider
                 ISOCountriesCommand::class,
             ]);
         }
-
-        $this->loadViewsFrom(realpath(__DIR__ . '/../resources/views'), 'laravel-iso-countries');
     }
+
 
     public function register()
     {
         $this->mergeConfigFrom(realpath(__DIR__ . '/../config/iso-countries.php'), 'iso-countries');
     }
+
 
     public static function migrationFileExists(string $migrationFileName): bool
     {
@@ -45,4 +46,5 @@ class ISOCountriesServiceProvider extends ServiceProvider
 
         return false;
     }
+
 }
