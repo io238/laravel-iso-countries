@@ -36,8 +36,8 @@ class TestCase extends Orchestra {
             'prefix'   => '',
         ]);
 
-        include_once __DIR__ . '/../database/migrations/create_laravel_iso_countries_tables.php.stub';
-        (new \CreatePackageTable())->up();
+        include_once realpath(__DIR__ . '/../database/migrations/create_laravel_iso_countries_tables.php.stub');
+        (new \CreateLaravelIsoCountriesTables())->up();
     }
 
 }
