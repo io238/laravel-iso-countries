@@ -3,6 +3,7 @@
 namespace Io238\ISOCountries\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 
 
@@ -20,5 +21,11 @@ class IsoBaseModel extends Model {
     protected $appends = ['slug'];
 
     protected $guarded = [];
+
+
+    public function getSlugAttribute()
+    {
+        return Str::slug($this->name);
+    }
 
 }
