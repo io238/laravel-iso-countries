@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "guzzlehttp/guzzle": "^7.2",
         "illuminate/contracts": "^8.0",
         "spatie/laravel-translatable": "^4.6",
         "umpirsky/country-list": "^2.0",
@@ -30,7 +31,7 @@
     "autoload": {
         "psr-4": {
             "Io238\\ISOCountries\\": "src",
-            "Io238\\ISOCountries\\Database\\Factories\\": "database/factories"
+            "Io238\\ISOCountries\\Database\\Seeders\\": "database/seeders"
         }
     },
     "autoload-dev": {
