@@ -3,24 +3,12 @@
 namespace Io238\ISOCountries\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
-use Str;
+use Illuminate\Support\Str;
 
 
 class Country extends Model {
 
-    use HasTranslations;
-
-
-    protected $fillable = [];
-
-    protected $appends = ['slug'];
-
-    public $incrementing = false;
-
-    public $timestamps = false;
-
-    public $translatable = ['name'];
+    use IsoModelTrait;
 
 
     public function getSlugAttribute()
@@ -31,19 +19,19 @@ class Country extends Model {
 
     public function languages()
     {
-        return $this->belongsToMany('App\Models\Language');
+        return $this->belongsToMany('Io238\ISOCountries\Language');
     }
 
 
     public function currencies()
     {
-        return $this->belongsToMany('App\Models\Currency');
+        return $this->belongsToMany('Io238\ISOCountries\Currency');
     }
 
 
     public function neighbours()
     {
-        return $this->belongsToMany('App\Models\Country', 'country_country', 'country_alpha_2', 'neighbour_alpha_2');
+        return $this->belongsToMany('Io238\ISOCountries\Country', 'country_country', 'country_id', 'neighbour_id');
     }
 
 }

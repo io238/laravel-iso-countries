@@ -3,24 +3,12 @@
 namespace Io238\ISOCountries\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
-use Str;
+use Illuminate\Support\Str;
 
 
 class Language extends Model {
 
-    use HasTranslations;
-
-
-    protected $fillable = [];
-
-    protected $appends = ['slug'];
-
-    public $incrementing = false;
-
-    public $timestamps = false;
-
-    public $translatable = ['name'];
+    use IsoModelTrait;
 
 
     public function getSlugAttribute()
@@ -31,7 +19,7 @@ class Language extends Model {
 
     public function countries()
     {
-        return $this->belongsToMany('App\Models\Country');
+        return $this->belongsToMany('Io238\ISOCountries\Country');
     }
 
 }
