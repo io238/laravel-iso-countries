@@ -11,6 +11,6 @@ class ISOCountriesFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'laravel-iso-countries';
+        return 'iso-countries';
     }
 }

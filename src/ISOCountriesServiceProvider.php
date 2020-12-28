@@ -31,7 +31,7 @@ class ISOCountriesServiceProvider extends ServiceProvider {
 
     public function register()
     {
-        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/iso-countries.php'), 'iso-countries');
+        $this->mergeConfigFrom(__DIR__ . '/../config/iso-countries.php', 'iso-countries');
     }
 
 
