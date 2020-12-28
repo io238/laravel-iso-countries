@@ -2,10 +2,11 @@
 
 namespace Io238\ISOCountries\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 
-trait IsoModelTrait {
+class IsoBaseModel extends Model {
 
     use HasTranslations;
 

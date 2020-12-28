@@ -2,14 +2,10 @@
 
 namespace Io238\ISOCountries\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 
-class Currency extends Model {
-
-    use IsoModelTrait;
-
+class Currency extends IsoBaseModel {
 
     public function getSlugAttribute()
     {

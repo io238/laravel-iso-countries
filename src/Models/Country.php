@@ -2,14 +2,10 @@
 
 namespace Io238\ISOCountries\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 
-class Country extends Model {
-
-    use IsoModelTrait;
-
+class Country extends IsoBaseModel {
 
     public function getSlugAttribute()
     {
