@@ -15,7 +15,7 @@ class Currency extends IsoBaseModel {
 
     public function countries()
     {
-        return $this->belongsToMany('Io238\ISOCountries\Country');
+        return $this->belongsToMany(Country::class);
     }
 
 }

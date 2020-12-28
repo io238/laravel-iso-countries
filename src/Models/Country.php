@@ -15,19 +15,19 @@ class Country extends IsoBaseModel {
 
     public function languages()
     {
-        return $this->belongsToMany('Io238\ISOCountries\Language');
+        return $this->belongsToMany(Language::class);
     }
 
 
     public function currencies()
     {
-        return $this->belongsToMany('Io238\ISOCountries\Currency');
+        return $this->belongsToMany(Currency::class);
     }
 
 
     public function neighbours()
     {
-        return $this->belongsToMany('Io238\ISOCountries\Country', 'country_country', 'country_id', 'neighbour_id');
+        return $this->belongsToMany(Country::class, 'country_country', 'country_id', 'neighbour_id');
     }
 
 }
