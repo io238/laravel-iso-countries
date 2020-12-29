@@ -4,7 +4,7 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/io238/laravel-iso-countries/run-tests?label=test)](https://github.com/io238/laravel-iso-countries/actions?query=workflow%3ATests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/io238/laravel-iso-countries.svg)](https://packagist.org/packages/io238/laravel-iso-countries)
 
-This package provides ready-to-use application models and seeds the database with ISO data from various sources.
+This package provides ready-to-use application models and seeds the database with ISO data from various sources. This package can be used in multi-language apps and supports Country/Language/Currency names in almost any locale.
 
 ### Included datasets
 
