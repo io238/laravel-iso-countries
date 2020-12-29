@@ -58,7 +58,9 @@ return [
 
 ```php
 Country::find('AD');
+```
 
+```json
 Io238\ISOCountries\Models\Country {
      id: "AD",
      alpha_3: "AND",
@@ -82,7 +84,9 @@ Io238\ISOCountries\Models\Country {
 
 ```php
 Country::find('pt');
+```
 
+```json
 Io238\ISOCountries\Models\Language {
      id: "pt",
      iso639_2: "por",
@@ -98,8 +102,10 @@ Io238\ISOCountries\Models\Language {
 
 ```php
 Currency::find('COP');
+```
 
-Io238\ISOCountries\Models\Currency {#4530
+```json
+Io238\ISOCountries\Models\Currency {
      id: "COP",
      name: "{"en":"Colombian Peso","de":"Kolumbianischer Peso","fr":"peso colombien","es":"peso colombiano"}",
      name_plural: "Colombian pesos",
@@ -117,7 +123,9 @@ All models have pre-defined many-to-many relationships that can be queried:
 ```php
 // Retrieve languages that are spoken in Luxembourg
 Country::find('LU')->languages;
+```
 
+```json
 Illuminate\Database\Eloquent\Collection {                                                                  
      all: [                                                                                                        
        Io238\ISOCountries\Models\Language {                                                                   
@@ -154,7 +162,9 @@ Illuminate\Database\Eloquent\Collection {
 ```php
 // Retrieve all countries that use the Euro (EUR) as currency.
 Currency::find('EUR')->countries->pluck('name');
+```
 
+```json
 Illuminate\Support\Collection {
      all: [
        "Andorra",
@@ -210,7 +220,9 @@ app()->setLocale('fr');
 
 // Retrieve the top 10 countries in Africa (by polulation):
 Io238\ISOCountries\Models\Country::where('region', 'Africa')->orderByDesc('population')->limit(10)->pluck('name');
+```
 
+```json
 // Country names will be returned in the app locale (fr = French)
 Illuminate\Support\Collection {
      all: [
@@ -248,7 +260,9 @@ class MyModel{
 
 // Now you can dynamically retrieve all meta data associated with the currency
 MyModel::first()->currency;
+```
 
+```json
 Io238\ISOCountries\Models\Currency {
      id: "JPY",
      name: "{"en":"Japanese Yen","de":"Japanischer Yen","fr":"yen japonais","es":"yen"}",
@@ -258,8 +272,9 @@ Io238\ISOCountries\Models\Currency {
      decimal_digits: 0,
      rounding: 0,
    }
+```
 
-
+```php
 // When filling the model, the ISO code (string) or the model can be used 
 MyModel::first()->update(['currency' => 'USD']);
 MyModel::first()->update(['currency' => Io238\ISOCountries\Models\Currency::find('USD')]);
