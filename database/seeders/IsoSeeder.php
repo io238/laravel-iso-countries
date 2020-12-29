@@ -133,7 +133,9 @@ class IsoSeeder extends Seeder {
     {
         $this->command->info('Downloading translations for ' . $model);
 
-        foreach (config('iso-countries.locales') as $locale) {
+        $locales = collect(config('app.locale'))->merge(config('app.fallback_locale'))->merge(config('iso-countries.locales'))->unique();
+
+        foreach ($locales as $locale) {
 
             $urls = [
                 Country::class => 'https://raw.githubusercontent.com/umpirsky/country-list/master/data/' . $locale . '/country.json',
