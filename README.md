@@ -1,8 +1,8 @@
 # Laravel ISO Countries
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/io238/laravel-iso-countries.svg)](https://packagist.org/packages/io238/laravel-iso-countries)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/io238/laravel-iso-countries/run-tests?label=test)](https://github.com/io238/laravel-iso-countries/actions?query=workflow%3ATests+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/io238/laravel-iso-countries.svg)](https://packagist.org/packages/io238/laravel-iso-countries)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/io238/laravel-iso-countries.svg?label=Version)](https://packagist.org/packages/io238/laravel-iso-countries)
+[![GitHub Tests Action Status](https://github.com/io238/laravel-iso-countries/workflows/Tests/badge.svg?branch=master)](https://github.com/io238/laravel-iso-countries/actions?query=workflow%3ATests+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/io238/laravel-iso-countries.svg?label=Downloads)](https://packagist.org/packages/io238/laravel-iso-countries)
 
 This package provides ready-to-use application models and seeds the database with ISO data from various sources. This package can be used in multi-language apps and supports Country/Language/Currency names in almost any locale.
 
