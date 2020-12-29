@@ -20,6 +20,8 @@ class IsoBaseModel extends Model {
 
     protected $appends = ['slug'];
 
+    protected $hidden = ['pivot'];
+
     protected $guarded = [];
 
 
