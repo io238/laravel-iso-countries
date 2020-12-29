@@ -8,9 +8,25 @@ This package provides ready-to-use application models and seeds the database wit
 
 ### Included datasets
 
-- [Countries: ISO 3166 alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-- [Languages: ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1)
-- [Currencies: ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
+- [Countries: ISO 3166 alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (incl. names, capital, lat/lon coordinates, TLD, phone calling code, regions, population, gini, area)   
+- [Languages: ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) (incl. names, language-family, wiki link)
+- [Currencies: ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) (incl. names, symbol, decimal digits, rounding)
+
+Unlike other packages, this one also includes relevant data relationships, such as:
+```php
+// Official languages spoken in Luxembourg ('LU')
+Country::find('LU')->languages;
+
+// Currencies used in Ghana ('GH')
+Country::find('GH')->currencies;
+
+// Countries that have Spanish ('es') as one of their official languages 
+Language::find('es')->countries;
+
+// Countries that use the Euro ('EUR') as currency
+Currency::find('EUR')->countries;
+```
+
 
 ## Installation
 
