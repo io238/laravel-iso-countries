@@ -1,6 +1,6 @@
 {
     "name": "io238/laravel-iso-countries",
-    "description": "Countries by ISO codes with languages, currency and other meta information for Laravel.",
+    "description": "Ready-to-use Laravel models and relations for country (ISO 3166),  language (ISO 639-1), and currency (ISO 4217) information with multi-language support.",
     "keywords": [
         "io238",
         "laravel-iso-countries"
