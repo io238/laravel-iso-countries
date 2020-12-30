@@ -18,7 +18,7 @@
         "codes",
         "iso3166",
         "iso639-1",
-        "iso4217",
+        "iso4217"
     ],
     "homepage": "https://github.com/io238/laravel-iso-countries",
     "license": "MIT",
