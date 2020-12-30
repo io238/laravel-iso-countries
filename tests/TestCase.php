@@ -2,7 +2,6 @@
 
 namespace Io238\ISOCountries\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Io238\ISOCountries\ISOCountriesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -12,10 +11,6 @@ class TestCase extends Orchestra {
     public function setUp(): void
     {
         parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'Io238\\ISOCountries\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
-        );
     }
 
 

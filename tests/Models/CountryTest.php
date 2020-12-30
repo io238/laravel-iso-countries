@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Models;
+namespace Io238\ISOCountries\Tests\Models;
 
 use Io238\ISOCountries\Models\Country;
 use Io238\ISOCountries\Tests\TestCase;
