@@ -14,7 +14,6 @@ class IsoSeeder extends Seeder {
 
     public function run(): void
     {
-
         $this->command->info('Seeding Currencies...');
         Currency::query()->truncate();
 
@@ -129,6 +128,7 @@ class IsoSeeder extends Seeder {
 
     }
 
+
     public function downloadTranslations($model): void
     {
         $this->command->info('Downloading translations for ' . $model);
@@ -138,7 +138,7 @@ class IsoSeeder extends Seeder {
         foreach ($locales as $locale) {
 
             $urls = [
-                Country::class => 'https://raw.githubusercontent.com/umpirsky/country-list/master/data/' . $locale . '/country.json',
+                Country::class  => 'https://raw.githubusercontent.com/umpirsky/country-list/master/data/' . $locale . '/country.json',
                 Language::class => 'https://raw.githubusercontent.com/umpirsky/language-list/master/data/' . $locale . '/language.json',
                 Currency::class => 'https://raw.githubusercontent.com/umpirsky/currency-list/master/data/' . $locale . '/currency.json',
             ];
@@ -157,7 +157,7 @@ class IsoSeeder extends Seeder {
                     }
                 }
             }
-            else{
+            else {
                 $this->command->warn('Locale not available for download!');
             }
 

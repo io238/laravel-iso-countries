@@ -15,7 +15,9 @@ class ModelTest extends TestCase {
             'name' => 'Test Country',
         ]);
 
-        $this->assertDatabaseCount('countries', 1);
+        $this->assertDatabaseHas('countries', [
+            'id'   => 'XX',
+        ]);
     }
 
 }
