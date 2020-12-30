@@ -1,15 +1,14 @@
 <?php
 
-namespace Io238\ISOCountries\Tests\Models;
+namespace Io238\ISOCountries\Tests;
 
 use Io238\ISOCountries\Models\Country;
-use Io238\ISOCountries\Tests\TestCase;
 
 
-class CountryTest extends TestCase {
+class ModelTest extends TestCase {
 
     /** @test */
-    public function it_can_create_a_model()
+    public function can_create_a_country_model()
     {
         Country::create([
             'id'   => 'XX',
