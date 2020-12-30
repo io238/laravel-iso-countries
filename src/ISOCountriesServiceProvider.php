@@ -3,7 +3,6 @@
 namespace Io238\ISOCountries;
 
 use Illuminate\Support\ServiceProvider;
-use Io238\ISOCountries\Commands\ISOCountriesCommand;
 
 
 class ISOCountriesServiceProvider extends ServiceProvider {
@@ -21,10 +20,6 @@ class ISOCountriesServiceProvider extends ServiceProvider {
                     realpath(__DIR__ . "/../database/migrations/{$migrationFileName}.stub") => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
                 ], 'migrations');
             }
-
-            $this->commands([
-                ISOCountriesCommand::class,
-            ]);
         }
     }
 

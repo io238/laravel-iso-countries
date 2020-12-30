@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
+use Io238\ISOCountries\Database\Seeders\IsoSeeder;
 
 
 class CreateLaravelIsoCountriesTables extends Migration {
@@ -70,6 +72,10 @@ class CreateLaravelIsoCountriesTables extends Migration {
             $table->primary(['country_id', 'neighbour_id']);
         });
 
+        Artisan::call('db:seed', [
+            '--force' => true,
+            '--class' => IsoSeeder::class,
+        ]);
     }
 
 
