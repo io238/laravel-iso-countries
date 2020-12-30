@@ -4,15 +4,18 @@
 [![GitHub Tests Action Status](https://github.com/io238/laravel-iso-countries/workflows/Tests/badge.svg?branch=master)](https://github.com/io238/laravel-iso-countries/actions?query=workflow%3ATests+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/io238/laravel-iso-countries.svg?label=Downloads)](https://packagist.org/packages/io238/laravel-iso-countries)
 
-This package provides ready-to-use application models and seeds the database with ISO data from various sources. This package can be used in multi-language apps and supports Country/Language/Currency names in almost any locale.
+This package provides ready-to-use application models and seeds the database with ISO data from various sources. This
+package can be used in multi-language apps and supports Country/Language/Currency names in almost any locale.
 
 ### Included datasets
 
-- [Countries: ISO 3166 alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (incl. names, capital, lat/lon coordinates, TLD, phone calling code, regions, population, gini, area)   
+- [Countries: ISO 3166 alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (incl. names, capital, lat/lon
+  coordinates, TLD, phone calling code, regions, population, gini, area)
 - [Languages: ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) (incl. names, language-family, wiki link)
 - [Currencies: ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) (incl. names, symbol, decimal digits, rounding)
 
 Unlike other packages, this one also includes relevant data relationships, such as:
+
 ```php
 // Official languages spoken in Luxembourg ('LU')
 Country::find('LU')->languages;
@@ -26,7 +29,6 @@ Language::find('es')->countries;
 // Countries that use the Euro ('EUR') as currency
 Currency::find('EUR')->countries;
 ```
-
 
 ## Installation
 
@@ -43,6 +45,16 @@ You can publish and run the migrations with:
 ```bash
 php artisan vendor:publish --provider="Io238\ISOCountries\ISOCountriesServiceProvider" --tag="migrations"
 php artisan migrate
+```
+
+The data is **automatically seeded** to the database at the end of the migration process.
+
+### Data updates
+
+Country-level ISO data does not change very often. Nevertheless, if at any time you want to update the ISO data to the latest available version, you can manually re-seed the tables:
+
+```bash
+php artisan db:seed --force --class="Io238\ISOCountries\Database\Seeders\IsoSeeder"
 ```
 
 ### Config
@@ -67,6 +79,9 @@ return [
     ],
 ];
 ```
+
+After changing the config make sure to [re-seed the database](#data-updates) to reflect the changes.
+
 
 ## Usage
 
@@ -280,7 +295,6 @@ Io238\ISOCountries\Models\Currency {
 MyModel::first()->update(['currency' => 'USD']);
 MyModel::first()->update(['currency' => Io238\ISOCountries\Models\Currency::find('USD')]);
 ```
-
 
 ## Testing
 
