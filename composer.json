@@ -3,7 +3,22 @@
     "description": "Ready-to-use Laravel models and relations for country (ISO 3166),  language (ISO 639-1), and currency (ISO 4217) information with multi-language support.",
     "keywords": [
         "io238",
-        "laravel-iso-countries"
+        "laravel",
+        "country-codes",
+        "languages",
+        "currencies",
+        "countries",
+        "iso",
+        "codes",
+        "world",
+        "php",
+        "eloquent",
+        "cast",
+        "custom-casts",
+        "codes",
+        "iso3166",
+        "iso639-1",
+        "iso4217",
     ],
     "homepage": "https://github.com/io238/laravel-iso-countries",
     "license": "MIT",
@@ -40,8 +55,7 @@
         }
     },
     "scripts": {
-        "test": "vendor\\bin\\phpunit --colors=always",
-        "test-coverage": "vendor\\bin\\phpunit --coverage-html coverage"
+        "test": "vendor\\bin\\phpunit --colors=always"
     },
     "config": {
         "sort-packages": true
