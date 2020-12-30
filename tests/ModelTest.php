@@ -7,7 +7,6 @@ use Io238\ISOCountries\Models\Country;
 
 class ModelTest extends TestCase {
 
-    /** @test */
     public function can_create_a_country_model()
     {
         Country::create([

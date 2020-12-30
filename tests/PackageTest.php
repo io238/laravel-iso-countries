@@ -9,14 +9,12 @@ use Io238\ISOCountries\Models\Language;
 
 class PackageTest extends TestCase {
 
-    /** @test */
     public function can_load_config()
     {
         $this->assertNotNull(config('iso-countries'));
     }
 
 
-    /** @test */
     public function database_was_seeded_with_iso_data()
     {
         $this->assertNotNull(Country::first());
