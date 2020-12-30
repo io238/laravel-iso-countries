@@ -3,6 +3,7 @@
 namespace Io238\ISOCountries\Tests;
 
 use Illuminate\Support\Facades\Artisan;
+use Io238\ISOCountries\Database\Seeders\IsoSeeder;
 use Io238\ISOCountries\Models\Country;
 use Io238\ISOCountries\Models\Currency;
 use Io238\ISOCountries\Models\Language;
@@ -22,7 +23,10 @@ class PackageTest extends TestCase {
     {
         Artisan::call('migrate');
 
-        Artisan::call('countries:seed');
+        Artisan::call('db:seed', [
+            '--force' => true,
+            '--class' => IsoSeeder::class,
+        ]);
 
         $this->assertNotNull(Country::first());
         $this->assertNotNull(Language::first());
