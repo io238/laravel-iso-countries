@@ -32,7 +32,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.0",
         "illuminate/contracts": "^8.0",
         "spatie/laravel-translatable": "^4.6",
         "umpirsky/country-list": "^2.0",
