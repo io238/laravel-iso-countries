@@ -318,7 +318,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 - [Martin](https://github.com/io238)
 - [All Contributors](../../contributors)
-- https://restcountries.eu
+- https://restcountries.com
 - https://github.com/umpirsky/country-list
 - https://github.com/umpirsky/language-list
 - https://github.com/umpirsky/currency-list

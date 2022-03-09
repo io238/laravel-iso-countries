@@ -5,6 +5,7 @@ namespace Io238\ISOCountries\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Fluent;
 use Io238\ISOCountries\Models\Country;
 use Io238\ISOCountries\Models\Currency;
 use Io238\ISOCountries\Models\Language;
@@ -24,10 +25,7 @@ class IsoSeeder extends Seeder {
 
             collect($response->json())->each(function ($currency) {
 
-                // replace empty string values with NULL
-                $currency = array_map(function ($value) {
-                    return $value === '' ? null : $value;
-                }, $currency);
+                $currency = new Fluent($currency);
 
                 Currency::create([
                     'id'             => $currency['code'],
@@ -55,19 +53,16 @@ class IsoSeeder extends Seeder {
 
             collect($response->json())->each(function ($language) {
 
-                // replace empty string values with NULL
-                $language = array_map(function ($value) {
-                    return $value === '' ? null : $value;
-                }, $language);
+                $language = new Fluent($language);
 
                 Language::create([
                     'id'          => $language['639-1'],
                     'iso639_2'    => $language['639-2'],
-                    'iso639_2b'   => $language['639-2/B'] ?? null,
+                    'iso639_2b'   => $language['639-2/B'],
                     'name'        => $language['name'],
-                    'native_name' => $language['nativeName'] ?? null,
-                    'family'      => $language['family'] ?? null,
-                    'wiki_url'    => $language['wikiUrl'] ?? null,
+                    'native_name' => $language['nativeName'],
+                    'family'      => $language['family'],
+                    'wiki_url'    => $language['wikiUrl'],
                 ]);
 
             });
@@ -83,16 +78,13 @@ class IsoSeeder extends Seeder {
         DB::table('country_country')->truncate();
 
         // Load countries and relationships as JSON from RestCountries API
-        $response = Http::get('https://restcountries.eu/rest/v2/all');
+        $response = Http::get('https://restcountries.com/v2/all');
 
         if ($response->successful()) {
 
             collect($response->json())->each(function ($country) {
 
-                // replace empty string values with NULL
-                $country = array_map(function ($value) {
-                    return $value === '' ? null : $value;
-                }, $country);
+                $country = new Fluent($country);
 
                 $country_model = Country::create([
                     'id'               => $country['alpha2Code'],
@@ -114,8 +106,12 @@ class IsoSeeder extends Seeder {
 
                 // Attach relations
                 $country_model->languages()->attach(Language::find(collect($country['languages'])->pluck('iso639_1')));
+
                 $country_model->currencies()->attach(Currency::find(collect($country['currencies'])->pluck('code')));
-                $country_model->neighbours()->attach(Country::whereIn('alpha_3', $country['borders'])->get());
+
+                if ($country['borders']){
+                    $country_model->neighbours()->attach(Country::whereIn('alpha_3', $country['borders'])->get());
+                }
 
             });
 
