@@ -73,7 +73,6 @@
             ]
         },
         "copy-file": {
-            "vendor/mledoze/countries/dist/countries.json": "data/",
             "vendor/components/flag-icon-css/flags": "data/flags/",
             "vendor/umpirsky/country-list/data/#.+\\.php$": "data/translations/countries/",
             "vendor/umpirsky/language-list/data/#.+\\.php$": "data/translations/languages/",

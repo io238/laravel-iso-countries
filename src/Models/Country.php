@@ -4,6 +4,16 @@ namespace Io238\ISOCountries\Models;
 
 class Country extends IsoBaseModel {
 
+    protected $casts = [
+        'borders'        => 'array',
+        'currency_codes' => 'array',
+        'language_codes' => 'array',
+        'is_independent' => 'boolean',
+        'is_un_member'   => 'boolean',
+        'is_eu_member'   => 'boolean',
+    ];
+
+
     public function languages()
     {
         return $this->belongsToMany(Language::class);

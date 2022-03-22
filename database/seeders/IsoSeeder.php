@@ -13,69 +13,53 @@ use Io238\ISOCountries\Models\Language;
 
 class IsoSeeder extends Seeder {
 
+    protected array $tables = [
+        'countries',
+        'languages',
+        'currencies',
+        'country_language',
+        'country_currency',
+        'country_country',
+    ];
+
+
     public function run(): void
     {
-        $this->command->info('Seeding Currencies...');
-        Currency::query()->truncate();
 
-        // Load Currency JSON
-        $response = Http::get('https://gist.githubusercontent.com/Fluidbyte/2973986/raw/8bb35718d0c90fdacb388961c98b8d56abc392c9/Common-Currency.json');
+        // Truncate existing data
 
-        if ($response->successful()) {
+        collect($this->tables)->each(fn($table) => DB::table($table)->truncate());
 
-            collect($response->json())->each(function ($currency) {
+        // Load ISO data from data files
 
-                $currency = new Fluent($currency);
+        $this->loadCountries();
 
-                Currency::create([
-                    'id'             => $currency['code'],
-                    'name'           => $currency['name'],
-                    'name_plural'    => $currency['name_plural'],
-                    'symbol'         => $currency['symbol'],
-                    'symbol_native'  => $currency['symbol_native'],
-                    'decimal_digits' => $currency['decimal_digits'],
-                    'rounding'       => $currency['rounding'],
-                ]);
+        $this->loadCurrencies();
 
-            });
+        $this->loadLanguages();
 
-        }
+        // Store relations
 
-        // ==================================================================
+        Country::all()->each(function ($country) {
+            $country->neighbours()->syncWithoutDetaching(Country::query()->whereIn('alpha3', $country->borders)->get());
+        });
 
-        $this->command->info('Seeding Languages...');
-        Language::query()->truncate();
+        Country::all()->each(function ($country) {
+            $country->currencies()->syncWithoutDetaching(Currency::find($country->currency_codes));
+        });
 
-        // Load Currency JSON
-        $response = Http::get('https://raw.githubusercontent.com/haliaeetus/iso-639/master/data/iso_639-1.json');
+        Country::all()->each(function ($country) {
+            $country->languages()->syncWithoutDetaching(
+                Language::whereIn('iso639_2', $country->language_codes)->get()
+            );
+        });
 
-        if ($response->successful()) {
-
-            collect($response->json())->each(function ($language) {
-
-                $language = new Fluent($language);
-
-                Language::create([
-                    'id'          => $language['639-1'],
-                    'iso639_2'    => $language['639-2'],
-                    'iso639_2b'   => $language['639-2/B'],
-                    'name'        => $language['name'],
-                    'native_name' => $language['nativeName'],
-                    'family'      => $language['family'],
-                    'wiki_url'    => $language['wikiUrl'],
-                ]);
-
-            });
-
-        }
+        return;
 
         // ==================================================================
 
         $this->command->info('Seeding Countries...');
         Country::query()->truncate();
-        DB::table('country_language')->truncate();
-        DB::table('country_currency')->truncate();
-        DB::table('country_country')->truncate();
 
         // Load countries and relationships as JSON from RestCountries API
         $response = Http::get('https://restcountries.com/v2/all');
@@ -96,6 +80,7 @@ class IsoSeeder extends Seeder {
                     'calling_code'     => collect($country['callingCodes'])->first(),
                     'region'           => $country['region'] ?? null,
                     'subregion'        => $country['subregion'] ?? null,
+                    'borders'          => $country['borders'] ?? null,
                     'population'       => $country['population'] ?? null,
                     'lat'              => collect($country['latlng'])->first(),
                     'lon'              => collect($country['latlng'])->last(),
@@ -109,7 +94,7 @@ class IsoSeeder extends Seeder {
 
                 $country_model->currencies()->attach(Currency::find(collect($country['currencies'])->pluck('code')));
 
-                if ($country['borders']){
+                if ($country['borders']) {
                     $country_model->neighbours()->attach(Country::whereIn('alpha_3', $country['borders'])->get());
                 }
 
@@ -129,7 +114,8 @@ class IsoSeeder extends Seeder {
     {
         $this->command->info('Downloading translations for ' . $model);
 
-        $locales = collect(config('app.locale'))->merge(config('app.fallback_locale'))->merge(config('iso-countries.locales'))->unique();
+        $locales = collect(config('app.locale'))->merge(config('app.fallback_locale'))
+            ->merge(config('iso-countries.locales'))->unique();
 
         foreach ($locales as $locale) {
 
@@ -156,6 +142,83 @@ class IsoSeeder extends Seeder {
             else {
                 $this->command->warn('Locale not available for download!');
             }
+
+        }
+    }
+
+
+    private function loadCountries(): void
+    {
+        $countries = collect(json_decode(file_get_contents(__DIR__ . '/../../data/countries.json'), true));
+
+        foreach ($countries as $country) {
+
+            Country::query()->create([
+                'id'               => $country['alpha2Code'],
+                'alpha3'           => $country['alpha3Code'],
+                'numeric'          => $country['numericCode'],
+                'name'             => $country['name'],
+                'native_name'      => $country['nativeName'],
+                'capital'          => $country['capital'] ?? null,
+                'top_level_domain' => $country['tld'][0] ?? null,
+                'calling_code'     => $country['callingCodes'][0] ?? null,
+                'region'           => $country['region'],
+                'subregion'        => $country['subregion'],
+                'borders'          => $country['borders'] ?? [],
+                'currency_codes'   => collect($country['currencies'] ?? [])->pluck('code')->toArray(),
+                'language_codes'   => collect($country['languages'] ?? [])->pluck('iso639_2')->toArray(),
+                'lat'              => $country['latlng'][0] ?? null,
+                'lon'              => $country['latlng'][1] ?? null,
+                'demonym'          => $country['demonym'],
+                'area'             => (($country['area'] ?? null) < 0) ? null : ($country['area'] ?? null),
+                'population'       => $country['population'],
+                //'emoji_flag'       => $country['flag'],
+                'is_independent'   => $country['independent'],
+                //'is_un_member'     => $country['unMember'],
+                //'is_eu_member'     => null,
+            ]);
+
+        }
+    }
+
+
+    private function loadCurrencies(): void
+    {
+        $currencies = collect(json_decode(file_get_contents(__DIR__ . '/../../data/currencies.json'), true))->first();
+
+        foreach ($currencies as $code => $currency) {
+
+            Currency::create([
+                'id'             => $code,
+                'name'           => $currency['name'],
+                'name_plural'    => $currency['name_plural'],
+                'symbol'         => $currency['symbol'],
+                'symbol_native'  => $currency['symbol_native'],
+                'decimal_digits' => $currency['decimal_digits'],
+                'rounding'       => $currency['rounding'],
+            ]);
+
+        }
+    }
+
+
+    private function loadLanguages(): void
+    {
+        $languages = collect(json_decode(file_get_contents(__DIR__ . '/../../data/languages.json'), true));
+
+        foreach ($languages as $language) {
+
+            $language = new Fluent($language);
+
+            Language::create([
+                'id'          => $language['639-1'],
+                'iso639_2'    => $language['639-2'],
+                'iso639_2b'   => $language['639-2/B'],
+                'name'        => $language['name'],
+                'native_name' => $language['nativeName'],
+                'family'      => $language['family'],
+                'wiki_url'    => $language['wikiUrl'],
+            ]);
 
         }
     }
