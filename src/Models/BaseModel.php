@@ -7,10 +7,12 @@ use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 
 
-class IsoBaseModel extends Model {
+class BaseModel extends Model {
 
     use HasTranslations;
 
+
+    protected $connection = 'iso';
 
     public $incrementing = false;
 
@@ -22,7 +24,7 @@ class IsoBaseModel extends Model {
 
     protected $hidden = ['pivot'];
 
-    protected $guarded = [];
+    protected $fillable = [];
 
 
     public function getSlugAttribute()

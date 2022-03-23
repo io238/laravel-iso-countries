@@ -3,24 +3,28 @@
 namespace Io238\ISOCountries;
 
 use Illuminate\Support\ServiceProvider;
+use Io238\ISOCountries\Commands\Build;
 
 
 class ISOCountriesServiceProvider extends ServiceProvider {
 
     public function boot()
     {
+        $databaseFile = __DIR__ . '/../data/database.sql';
+
+        if ( ! file_exists($databaseFile)) {
+            file_put_contents($databaseFile, '');
+        }
+
+        $this->app['config']->set('database.connections.iso', [
+            'driver'   => 'sqlite',
+            'database' => realpath($databaseFile),
+        ]);
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 realpath(__DIR__ . '/../config/iso-countries.php') => config_path('iso-countries.php'),
             ], 'config');
-
-            $migrationFileName = 'create_laravel_iso_countries_tables.php';
-
-            if ( ! $this->migrationFileExists($migrationFileName)) {
-                $this->publishes([
-                    realpath(__DIR__ . "/../database/migrations/{$migrationFileName}.stub") => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),
-                ], 'migrations');
-            }
         }
     }
 
@@ -28,19 +32,10 @@ class ISOCountriesServiceProvider extends ServiceProvider {
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/iso-countries.php', 'iso-countries');
-    }
 
-
-    public static function migrationFileExists(string $migrationFileName): bool
-    {
-        $len = strlen($migrationFileName);
-        foreach (glob(database_path("migrations/*.php")) as $filename) {
-            if ((substr($filename, -$len) === $migrationFileName)) {
-                return true;
-            }
-        }
-
-        return false;
+        $this->commands([
+            Build::class,
+        ]);
     }
 
 }

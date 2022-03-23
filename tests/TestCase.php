@@ -14,7 +14,7 @@ abstract class TestCase extends Orchestra {
     {
         parent::setUp();
 
-        include_once realpath(__DIR__ . '/../database/migrations/create_laravel_iso_countries_tables.php.stub');
+        include_once realpath(__DIR__ . '/../database/migrations/create_laravel_iso_countries_tables.php');
         (new CreateLaravelIsoCountriesTables())->up();
 
         $this->seed(IsoSeeder::class);

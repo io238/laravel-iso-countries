@@ -30,9 +30,9 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^8.40|^9.0",
-        "illuminate/database": "^8.40|^9.0",
-        "illuminate/support": "^8.40|^9.0",
+        "illuminate/contracts": "^9.0",
+        "illuminate/database": "^9.0",
+        "illuminate/support": "^9.0",
         "spatie/laravel-translatable": "^4.6|^5.0|^6.0",
         "slowprog/composer-copy-file": "^0.3",
         "mledoze/countries": "^4.1.0",
@@ -47,8 +47,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Io238\\ISOCountries\\": "src",
-            "Io238\\ISOCountries\\Database\\Seeders\\": "database/seeders"
+            "Io238\\ISOCountries\\": "src"
         }
     },
     "autoload-dev": {

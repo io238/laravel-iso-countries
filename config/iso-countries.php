@@ -10,4 +10,14 @@ return [
         'es',
     ],
 
+    'table_prefix' => 'iso',
+
+    'table_names' => [
+
+        'countries'  => 'countries',
+        'languages'  => 'languages',
+        'currencies' => 'currencies',
+
+    ],
+
 ];
