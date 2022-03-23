@@ -45,7 +45,6 @@
     },
     "require-dev": {
         "orchestra/testbench": "^6.0|^7.0",
-        "pestphp/pest-plugin-laravel": "^v1.2",
         "pestphp/pest": "^1.21"
     },
     "autoload": {
