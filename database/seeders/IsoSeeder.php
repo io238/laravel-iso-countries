@@ -3,7 +3,6 @@
 namespace Io238\ISOCountries\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
 use Io238\ISOCountries\Models\Country;
 use Io238\ISOCountries\Models\Currency;
@@ -14,14 +13,7 @@ class IsoSeeder extends Seeder {
 
     public function run(): void
     {
-
-        // Truncate existing data
-
-        Country::query()->delete();
-        Language::query()->delete();
-        Currency::query()->delete();
-
-        // Load ISO data from data files
+        $this->truncateTables();
 
         $this->loadCountries();
 
@@ -29,112 +21,21 @@ class IsoSeeder extends Seeder {
 
         $this->loadLanguages();
 
-        // Store relations
+        $this->storeRelations();
 
-        Country::all()->each(function ($country) {
-            $country->neighbours()->syncWithoutDetaching(Country::query()->whereIn('alpha3', $country->borders)->get());
-        });
+        $this->loadNameTranslations(Country::class);
 
-        Country::all()->each(function ($country) {
-            $country->currencies()->syncWithoutDetaching(Currency::find($country->currency_codes));
-        });
+        $this->loadNameTranslations(Language::class);
 
-        Country::all()->each(function ($country) {
-            $country->languages()->syncWithoutDetaching(
-                Language::whereIn('iso639_2', $country->language_codes)->get()
-            );
-        });
-
-        return;
-
-        // ==================================================================
-
-        $this->command->info('Seeding Countries...');
-        Country::query()->truncate();
-
-        // Load countries and relationships as JSON from RestCountries API
-        $response = Http::get('https://restcountries.com/v2/all');
-
-        if ($response->successful()) {
-
-            collect($response->json())->each(function ($country) {
-
-                $country = new Fluent($country);
-
-                $country_model = Country::create([
-                    'id'               => $country['alpha2Code'],
-                    'alpha_3'          => $country['alpha3Code'],
-                    'name'             => $country['name'],
-                    'native_name'      => $country['nativeName'] ?? null,
-                    'capital'          => $country['capital'] ?? null,
-                    'top_level_domain' => collect($country['topLevelDomain'])->first(),
-                    'calling_code'     => collect($country['callingCodes'])->first(),
-                    'region'           => $country['region'] ?? null,
-                    'subregion'        => $country['subregion'] ?? null,
-                    'borders'          => $country['borders'] ?? null,
-                    'population'       => $country['population'] ?? null,
-                    'lat'              => collect($country['latlng'])->first(),
-                    'lon'              => collect($country['latlng'])->last(),
-                    'demonym'          => $country['demonym'] ?? null,
-                    'area'             => $country['area'] ?? null,
-                    'gini'             => $country['gini'] ?? null,
-                ]);
-
-                // Attach relations
-                $country_model->languages()->attach(Language::find(collect($country['languages'])->pluck('iso639_1')));
-
-                $country_model->currencies()->attach(Currency::find(collect($country['currencies'])->pluck('code')));
-
-                if ($country['borders']) {
-                    $country_model->neighbours()->attach(Country::whereIn('alpha_3', $country['borders'])->get());
-                }
-
-            });
-
-        }
-
-        // Download name translations
-        $this->downloadTranslations(Country::class);
-        $this->downloadTranslations(Language::class);
-        $this->downloadTranslations(Currency::class);
-
+        $this->loadNameTranslations(Currency::class);
     }
 
 
-    public function downloadTranslations($model): void
+    private function truncateTables(): void
     {
-        $this->command->info('Downloading translations for ' . $model);
-
-        $locales = collect(config('app.locale'))->merge(config('app.fallback_locale'))
-            ->merge(config('iso-countries.locales'))->unique();
-
-        foreach ($locales as $locale) {
-
-            $urls = [
-                Country::class  => 'https://raw.githubusercontent.com/umpirsky/country-list/master/data/' . $locale . '/country.json',
-                Language::class => 'https://raw.githubusercontent.com/umpirsky/language-list/master/data/' . $locale . '/language.json',
-                Currency::class => 'https://raw.githubusercontent.com/umpirsky/currency-list/master/data/' . $locale . '/currency.json',
-            ];
-
-            $this->command->info('Loading names for locale "' . $locale . '"...');
-
-            $response = Http::get($urls[$model]);
-
-            if ($response->successful()) {
-                foreach ($response->json() as $id => $name) {
-                    $item = app($model)::find($id);
-
-                    if ($item) {
-                        $item->setTranslation('name', $locale, $name);
-                        $item->save();
-                    }
-                }
-            }
-            else {
-                $this->command->warn('Locale not available for download!');
-            }
-
-        }
+        Country::query()->delete();
+        Language::query()->delete();
+        Currency::query()->delete();
     }
 
 
@@ -210,6 +111,53 @@ class IsoSeeder extends Seeder {
                 'family'      => $language['family'],
                 'wiki_url'    => $language['wikiUrl'],
             ]);
+
+        }
+    }
+
+
+    private function storeRelations(): void
+    {
+        Country::all()->each(function ($country) {
+            $country->neighbours()->syncWithoutDetaching(Country::query()->whereIn('alpha3', $country->borders)->get());
+        });
+
+        Country::all()->each(function ($country) {
+            $country->currencies()->syncWithoutDetaching(Currency::find($country->currency_codes));
+        });
+
+        Country::all()->each(function ($country) {
+            $country->languages()->syncWithoutDetaching(
+                Language::whereIn('iso639_2', $country->language_codes)->get()
+            );
+        });
+    }
+
+
+    private function loadNameTranslations($model): void
+    {
+        $locales = collect(config('app.locale'))
+            ->merge(config('app.fallback_locale'))
+            ->merge(config('iso-countries.locales'))
+            ->unique();
+
+        foreach ($locales as $locale) {
+
+            $file = match ($model) {
+                Country::class => __DIR__ . "/../../data/translations/countries/$locale/country.php",
+                Language::class => __DIR__ . "/../../data/translations/languages/$locale/language.php",
+                Currency::class => __DIR__ . "/../../data/translations/currencies/$locale/currency.php",
+            };
+
+            if ( ! file_exists($file)) {
+                continue;
+            }
+
+            $translations = require $file;
+
+            foreach ($translations as $id => $name) {
+                $item = $model::find($id)?->setTranslation('name', $locale, $name)->save();
+            }
 
         }
     }
