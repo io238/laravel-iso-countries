@@ -13,20 +13,28 @@ class IsoSeeder extends Seeder {
 
     public function run(): void
     {
+        $this->command->info('Truncate tables...');
         $this->truncateTables();
 
+        $this->command->info('Load country data...');
         $this->loadCountries();
 
+        $this->command->info('Load currency data...');
         $this->loadCurrencies();
 
+        $this->command->info('Load language data...');
         $this->loadLanguages();
 
+        $this->command->info('Build data relations...');
         $this->storeRelations();
 
+        $this->command->info('Load translations for countries...');
         $this->loadNameTranslations(Country::class);
 
+        $this->command->info('Load translations for languages...');
         $this->loadNameTranslations(Language::class);
 
+        $this->command->info('Load translations for currencies...');
         $this->loadNameTranslations(Currency::class);
     }
 
@@ -52,7 +60,7 @@ class IsoSeeder extends Seeder {
                 'name'             => $country['name'],
                 'native_name'      => $country['nativeName'],
                 'capital'          => $country['capital'] ?? null,
-                'top_level_domain' => $country['tld'][0] ?? null,
+                'top_level_domain' => $country['topLevelDomain'][0] ?? null,
                 'calling_code'     => $country['callingCodes'][0] ?? null,
                 'region'           => $country['region'],
                 'subregion'        => $country['subregion'],
