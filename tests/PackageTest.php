@@ -2,24 +2,10 @@
 
 namespace Io238\ISOCountries\Tests;
 
-use Io238\ISOCountries\Models\Country;
-use Io238\ISOCountries\Models\Currency;
-use Io238\ISOCountries\Models\Language;
+//it('loads to package config correctly')->expect(config('iso-countries'))->not->toBeNull();
 
+it('it seeds data country data correctly')->assertDatabaseCount('countries', 250);
 
-class PackageTest extends TestCase {
+it('it seeds data language data correctly')->assertDatabaseCount('languages', 184);
 
-    public function can_load_config()
-    {
-        $this->assertNotNull(config('iso-countries'));
-    }
-
-
-    public function database_was_seeded_with_iso_data()
-    {
-        $this->assertNotNull(Country::first());
-        $this->assertNotNull(Language::first());
-        $this->assertNotNull(Currency::first());
-    }
-
-}
+it('it seeds data currency data correctly')->assertDatabaseCount('currencies', 139);

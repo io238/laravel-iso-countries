@@ -16,8 +16,8 @@ class CreateLaravelIsoCountriesTables extends Migration {
     {
         Schema::create('countries', function (Blueprint $table) {
             $table->string('id', 2)->comment('ISO 3166-1 alpha-2')->primary();
-            $table->smallInteger('numeric')->index()->nullable();
-            $table->string('alpha3', 3)->index()->nullable();
+            $table->smallInteger('numeric')->index();
+            $table->string('alpha3', 3)->index();
             $table->json('name');
             $table->string('native_name')->nullable();
             $table->string('capital')->nullable();
@@ -55,32 +55,34 @@ class CreateLaravelIsoCountriesTables extends Migration {
             $table->string('name_plural');
             $table->string('symbol');
             $table->string('symbol_native');
-            $table->unsignedTinyInteger('decimal_digits');
-            $table->unsignedTinyInteger('rounding');
+            $table->unsignedTinyInteger('decimal_digits')->default(2);
+            $table->unsignedTinyInteger('rounding')->default(0);
         });
 
         Schema::create('country_language', function (Blueprint $table) {
             $table->string('country_id', 2)->index();
             $table->string('language_id', 2)->index();
-            $table->primary(['country_id', 'language_id']);
+
+            $table->foreign('country_id')->references('id')->on('countries')->cascadeOnDelete();
+            $table->foreign('language_id')->references('id')->on('languages')->cascadeOnDelete();
         });
 
         Schema::create('country_currency', function (Blueprint $table) {
             $table->string('country_id', 2)->index();
             $table->string('currency_id', 3)->index();
-            $table->primary(['country_id', 'currency_id']);
+
+            $table->foreign('country_id')->references('id')->on('countries')->cascadeOnDelete();
+            $table->foreign('currency_id')->references('id')->on('currencies')->cascadeOnDelete();
         });
 
         Schema::create('country_country', function (Blueprint $table) {
             $table->string('country_id', 2)->index();
             $table->string('neighbour_id', 2)->index();
-            $table->primary(['country_id', 'neighbour_id']);
+
+            $table->foreign('country_id')->references('id')->on('countries')->cascadeOnDelete();
+            $table->foreign('neighbour_id')->references('id')->on('countries')->cascadeOnDelete();
         });
 
-//        Artisan::call('db:seed', [
-//            '--force' => true,
-//            '--class' => IsoSeeder::class,
-//        ]);
     }
 
 

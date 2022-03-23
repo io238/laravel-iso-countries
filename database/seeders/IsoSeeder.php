@@ -3,7 +3,6 @@
 namespace Io238\ISOCountries\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
 use Io238\ISOCountries\Models\Country;
@@ -13,22 +12,14 @@ use Io238\ISOCountries\Models\Language;
 
 class IsoSeeder extends Seeder {
 
-    protected array $tables = [
-        'countries',
-        'languages',
-        'currencies',
-        'country_language',
-        'country_currency',
-        'country_country',
-    ];
-
-
     public function run(): void
     {
 
         // Truncate existing data
 
-        collect($this->tables)->each(fn($table) => DB::table($table)->truncate());
+        Country::query()->delete();
+        Language::query()->delete();
+        Currency::query()->delete();
 
         // Load ISO data from data files
 

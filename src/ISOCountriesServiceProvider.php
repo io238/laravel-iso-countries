@@ -15,6 +15,7 @@ class ISOCountriesServiceProvider extends ServiceProvider {
             ], 'config');
 
             $migrationFileName = 'create_laravel_iso_countries_tables.php';
+
             if ( ! $this->migrationFileExists($migrationFileName)) {
                 $this->publishes([
                     realpath(__DIR__ . "/../database/migrations/{$migrationFileName}.stub") => database_path('migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName),

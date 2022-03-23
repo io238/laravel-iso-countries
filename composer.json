@@ -30,7 +30,11 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
+        "illuminate/auth": "^7.0|^8.0|^9.0",
+        "illuminate/container": "^7.0|^8.0|^9.0",
         "illuminate/contracts": "^7.0|^8.0|^9.0",
+        "illuminate/database": "^7.0|^8.0|^9.0",
+        "illuminate/support": "^7.0|^8.0|^9.0",
         "spatie/laravel-translatable": "^4.6|^5.0|^6.0",
         "slowprog/composer-copy-file": "^0.3",
         "mledoze/countries": "^4.1.0",
@@ -40,8 +44,9 @@
         "umpirsky/currency-list": "^v1.1.1"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0",
-        "phpunit/phpunit": "^9.5"
+        "orchestra/testbench": "^6.0|^7.0",
+        "pestphp/pest-plugin-laravel": "^v1.2",
+        "pestphp/pest": "^1.21"
     },
     "autoload": {
         "psr-4": {
@@ -55,7 +60,7 @@
         }
     },
     "scripts": {
-        "test": "vendor\\bin\\phpunit --colors=always",
+        "test": "./vendor/bin/pest",
         "post-install-cmd": [
             "SlowProg\\CopyFile\\ScriptHandler::copy"
         ],
@@ -64,7 +69,10 @@
         ]
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {

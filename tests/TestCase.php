@@ -2,25 +2,22 @@
 
 namespace Io238\ISOCountries\Tests;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use CreateLaravelIsoCountriesTables;
 use Io238\ISOCountries\Database\Seeders\IsoSeeder;
 use Io238\ISOCountries\ISOCountriesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 
-class TestCase extends Orchestra {
+abstract class TestCase extends Orchestra {
 
-    use DatabaseMigrations;
-
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        // Load and run migration (stub)
         include_once realpath(__DIR__ . '/../database/migrations/create_laravel_iso_countries_tables.php.stub');
-        (new \CreateLaravelIsoCountriesTables())->up();
+        (new CreateLaravelIsoCountriesTables())->up();
 
+        $this->seed(IsoSeeder::class);
     }
 
 
@@ -34,7 +31,7 @@ class TestCase extends Orchestra {
 
     public function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'testing');
+        config()->set('database.default', 'testing');
     }
 
 }
