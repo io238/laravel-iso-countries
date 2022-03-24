@@ -23,7 +23,7 @@ class BaseModel extends Model {
     protected $fillable = [];
 
     protected $hidden = ['pivot'];
-    
+
     public $translatable = ['name'];
 
     protected $appends = ['slug'];
