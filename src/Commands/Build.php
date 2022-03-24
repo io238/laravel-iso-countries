@@ -29,6 +29,13 @@ class Build extends Command {
      */
     protected $description = 'Build Sqlite database with ISO country information in all configured translations.';
 
+    /**
+     * Temporary storage for model relationships.
+     *
+     * @var mixed
+     */
+    protected $relations;
+
 
     /**
      * Execute the console command.
@@ -77,6 +84,8 @@ class Build extends Command {
     private function resetDatabase(): void
     {
         file_put_contents(config('database.connections.iso-countries.database'), '');
+
+        $this->relations = collect();
     }
 
 
@@ -93,9 +102,6 @@ class Build extends Command {
             $table->string('calling_code')->nullable();
             $table->string('region')->nullable();
             $table->string('subregion')->nullable();
-            $table->json('borders')->nullable();
-            $table->json('currency_codes')->nullable();
-            $table->json('language_codes')->nullable();
             $table->float('lat')->nullable();
             $table->float('lon')->nullable();
             $table->string('demonym')->nullable();
@@ -178,9 +184,6 @@ class Build extends Command {
                 'calling_code'     => $country['callingCodes'][0] ?? null,
                 'region'           => $country['region'],
                 'subregion'        => $country['subregion'],
-                'borders'          => $country['borders'] ?? [],
-                'currency_codes'   => collect($country['currencies'] ?? [])->pluck('code')->toArray(),
-                'language_codes'   => collect($country['languages'] ?? [])->pluck('iso639_2')->toArray(),
                 'lat'              => $country['latlng'][0] ?? null,
                 'lon'              => $country['latlng'][1] ?? null,
                 'demonym'          => $country['demonym'],
@@ -189,6 +192,12 @@ class Build extends Command {
                 'is_independent'   => $country['independent'],
                 'is_eu_member'     => collect($country['regionalBlocs'] ?? [])->where('acronym', 'EU')->count(),
             ])->saveQuietly();
+
+            $this->relations->put($country['alpha2Code'], [
+                'borders'        => $country['borders'] ?? [],
+                'currency_codes' => collect($country['currencies'] ?? [])->pluck('code')->toArray(),
+                'language_codes' => collect($country['languages'] ?? [])->pluck('iso639_2')->toArray(),
+            ]);
         }
 
         $countries = collect(json_decode(file_get_contents(__DIR__ . '/../../data/restcountries-v3.1.json'), true));
@@ -203,6 +212,8 @@ class Build extends Command {
                 'start_of_week' => $country['startOfWeek'] ?? null,
             ]);
         }
+
+        unset($countries);
     }
 
 
@@ -225,6 +236,8 @@ class Build extends Command {
             ])->saveQuietly();
 
         }
+
+        unset($currencies);
     }
 
 
@@ -247,24 +260,28 @@ class Build extends Command {
                 'family'      => $language['family'],
                 'wiki_url'    => $language['wikiUrl'],
             ])->saveQuietly();
-
         }
+
+        unset($languages);
     }
 
 
     private function storeRelations(): void
     {
         Country::all()->each(function ($country) {
-            $country->neighbours()->syncWithoutDetaching(Country::query()->whereIn('alpha3', $country->borders)->get());
+            $country->neighbours()->syncWithoutDetaching(
+                Country::query()->whereIn('alpha3', $this->relations->get($country->id)['borders'] ?? [])->pluck('id')
+            );
         });
 
         Country::all()->each(function ($country) {
-            $country->currencies()->syncWithoutDetaching(Currency::find($country->currency_codes));
+            $country->currencies()
+                ->syncWithoutDetaching(Currency::find($this->relations->get($country->id)['currency_codes'] ?? [])->pluck('id'));
         });
 
         Country::all()->each(function ($country) {
             $country->languages()->syncWithoutDetaching(
-                Language::whereIn('iso639_2', $country->language_codes)->get()
+                Language::whereIn('iso639_2', $this->relations->get($country->id)['language_codes'] ?? [])->pluck('id')
             );
         });
     }
