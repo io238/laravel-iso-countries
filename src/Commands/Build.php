@@ -276,7 +276,8 @@ class Build extends Command {
 
         Country::all()->each(function ($country) {
             $country->currencies()
-                ->syncWithoutDetaching(Currency::find($this->relations->get($country->id)['currency_codes'] ?? [])->pluck('id'));
+                ->syncWithoutDetaching(Currency::find($this->relations->get($country->id)['currency_codes'] ?? [])
+                    ->pluck('id'));
         });
 
         Country::all()->each(function ($country) {
