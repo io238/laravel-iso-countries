@@ -20,13 +20,13 @@ class BaseModel extends Model {
 
     public $timestamps = false;
 
+    protected $keyType = 'string';
+
     protected $fillable = [];
 
     protected $hidden = ['pivot'];
 
     public $translatable = ['name'];
-
-    protected $appends = ['slug'];
 
 
     public function getSlugAttribute()
