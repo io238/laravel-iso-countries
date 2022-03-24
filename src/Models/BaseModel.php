@@ -20,11 +20,11 @@ class BaseModel extends Model {
 
     public $timestamps = false;
 
-    public $translatable = ['name'];
-
     protected $fillable = [];
 
     protected $hidden = ['pivot'];
+    
+    public $translatable = ['name'];
 
     protected $appends = ['slug'];
 
