@@ -14,7 +14,7 @@ class BaseModel extends Model {
     use HasTranslations;
 
 
-    protected $connection = 'iso';
+    protected $connection = 'iso-countries';
 
     public $incrementing = false;
 

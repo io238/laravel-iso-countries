@@ -7,6 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Fluent;
 use Io238\ISOCountries\Database\Migrations\IsoTables;
+use Io238\ISOCountries\ISOCountriesServiceProvider;
 use Io238\ISOCountries\Models\Country;
 use Io238\ISOCountries\Models\Currency;
 use Io238\ISOCountries\Models\Language;
@@ -66,20 +67,22 @@ class Build extends Command {
         $this->info('Load translations for currencies...');
         $this->loadNameTranslations(Currency::class);
 
+        $this->info('Copy database file...');
+        $this->copyDatabaseFile();
+
         return self::SUCCESS;
     }
 
 
     private function resetDatabase(): void
     {
-        //unlink(config('database.connections.iso.database'));
-        file_put_contents(config('database.connections.iso.database'), '');
+        file_put_contents(config('database.connections.iso-countries.database'), '');
     }
 
 
     private function createTables(): void
     {
-        Schema::connection('iso')->create('countries', function (Blueprint $table) {
+        Schema::connection('iso-countries')->create('countries', function (Blueprint $table) {
             $table->string('id', 2)->comment('ISO 3166-1 alpha-2')->primary();
             $table->smallInteger('numeric')->index();
             $table->string('alpha3', 3)->index();
@@ -107,7 +110,7 @@ class Build extends Command {
             $table->string('start_of_week')->nullable();
         });
 
-        Schema::connection('iso')->create('languages', function (Blueprint $table) {
+        Schema::connection('iso-countries')->create('languages', function (Blueprint $table) {
             $table->string('id', 2)->comment('ISO 639-1')->primary();
             $table->string('iso639_2', 3)->index();
             $table->string('iso639_2b', 3)->nullable()->index();
@@ -117,7 +120,7 @@ class Build extends Command {
             $table->string('wiki_url')->nullable();
         });
 
-        Schema::connection('iso')->create('currencies', function (Blueprint $table) {
+        Schema::connection('iso-countries')->create('currencies', function (Blueprint $table) {
             $table->string('id', 3)->comment('ISO 4217')->primary();
             $table->string('name');
             $table->string('name_plural');
@@ -131,7 +134,7 @@ class Build extends Command {
 
     private function createPivotTables(): void
     {
-        Schema::connection('iso')->create('country_language', function (Blueprint $table) {
+        Schema::connection('iso-countries')->create('country_language', function (Blueprint $table) {
             $table->string('country_id', 2)->index();
             $table->string('language_id', 2)->index();
 
@@ -139,7 +142,7 @@ class Build extends Command {
             $table->foreign('language_id')->references('id')->on('languages')->cascadeOnDelete();
         });
 
-        Schema::connection('iso')->create('country_currency', function (Blueprint $table) {
+        Schema::connection('iso-countries')->create('country_currency', function (Blueprint $table) {
             $table->string('country_id', 2)->index();
             $table->string('currency_id', 3)->index();
 
@@ -147,7 +150,7 @@ class Build extends Command {
             $table->foreign('currency_id')->references('id')->on('currencies')->cascadeOnDelete();
         });
 
-        Schema::connection('iso')->create('country_country', function (Blueprint $table) {
+        Schema::connection('iso-countries')->create('country_country', function (Blueprint $table) {
             $table->string('country_id', 2)->index();
             $table->string('neighbour_id', 2)->index();
 
@@ -293,6 +296,12 @@ class Build extends Command {
             }
 
         }
+    }
+
+
+    private function copyDatabaseFile(): void
+    {
+        copy(ISOCountriesServiceProvider::getPackageDatabaseFile(), config('iso-countries.database_path'));
     }
 
 }

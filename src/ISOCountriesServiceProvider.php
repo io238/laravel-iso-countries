@@ -8,18 +8,32 @@ use Io238\ISOCountries\Commands\Build;
 
 class ISOCountriesServiceProvider extends ServiceProvider {
 
+    static string $packageDatabaseFile = __DIR__ . '/../data/iso-countries.sqlite';
+
+
     public function boot()
     {
-        $databaseFile = __DIR__ . '/../data/iso-countries.sqlite';
+        // Create custom database connection
 
-        if ( ! file_exists($databaseFile)) {
-            file_put_contents($databaseFile, '');
+        // Use Sqlite database path from config, if it exists
+        if (file_exists(config('iso-countries.database_path'))) {
+            $this->app['config']->set('database.connections.iso-countries', [
+                'driver'   => 'sqlite',
+                'database' => realpath(config('iso-countries.database_path')),
+            ]);
         }
+        else {
+            // Create empty Sqlite DB, if it does not exist yet
+            if ( ! file_exists(static::getPackageDatabaseFile())) {
+                file_put_contents(static::getPackageDatabaseFile(), '');
+            }
 
-        $this->app['config']->set('database.connections.iso', [
-            'driver'   => 'sqlite',
-            'database' => realpath($databaseFile),
-        ]);
+            // Set connection to use the packaged database path
+            $this->app['config']->set('database.connections.iso-countries', [
+                'driver'   => 'sqlite',
+                'database' => realpath(static::getPackageDatabaseFile()),
+            ]);
+        }
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -36,6 +50,12 @@ class ISOCountriesServiceProvider extends ServiceProvider {
         $this->commands([
             Build::class,
         ]);
+    }
+
+
+    static public function getPackageDatabaseFile(): string
+    {
+        return static::$packageDatabaseFile;
     }
 
 }
