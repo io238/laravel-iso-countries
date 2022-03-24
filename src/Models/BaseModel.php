@@ -22,11 +22,11 @@ class BaseModel extends Model {
 
     public $translatable = ['name'];
 
-    protected $appends = ['slug'];
+    protected $fillable = [];
 
     protected $hidden = ['pivot'];
 
-    protected $fillable = [];
+    protected $appends = ['slug'];
 
 
     public function getSlugAttribute()
