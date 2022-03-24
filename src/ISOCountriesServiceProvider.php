@@ -10,7 +10,7 @@ class ISOCountriesServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $databaseFile = __DIR__ . '/../data/database.sql';
+        $databaseFile = __DIR__ . '/../data/iso-countries.sqlite';
 
         if ( ! file_exists($databaseFile)) {
             file_put_contents($databaseFile, '');
