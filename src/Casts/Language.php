@@ -3,10 +3,10 @@
 namespace Io238\ISOCountries\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Io238\ISOCountries\Models\Language;
+use Io238\ISOCountries\Models\Language as LanguageModel;
 
 
-class LanguageCast implements CastsAttributes {
+class Language implements CastsAttributes {
 
     /**
      * Cast the given value.
@@ -19,7 +19,7 @@ class LanguageCast implements CastsAttributes {
      */
     public function get($model, $key, $value, $attributes)
     {
-        return Language::find($value);
+        return LanguageModel::find(strtolower($value));
     }
 
 
@@ -34,7 +34,7 @@ class LanguageCast implements CastsAttributes {
      */
     public function set($model, $key, $value, $attributes)
     {
-        return $value instanceof Language ? $value->id : $value;
+        return strtolower($value instanceof LanguageModel ? $value->id : $value);
     }
 
 }

@@ -3,10 +3,10 @@
 namespace Io238\ISOCountries\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Io238\ISOCountries\Models\Currency;
+use Io238\ISOCountries\Models\Currency as CurrencyModel;
 
 
-class CurrencyCast implements CastsAttributes {
+class Currency implements CastsAttributes {
 
     /**
      * Cast the given value.
@@ -19,7 +19,7 @@ class CurrencyCast implements CastsAttributes {
      */
     public function get($model, $key, $value, $attributes)
     {
-        return Currency::find($value);
+        return CurrencyModel::find(strtoupper($value));
     }
 
 
@@ -34,7 +34,7 @@ class CurrencyCast implements CastsAttributes {
      */
     public function set($model, $key, $value, $attributes)
     {
-        return $value instanceof Currency ? $value->id : $value;
+        return strtoupper($value instanceof CurrencyModel ? $value->id : $value);
     }
 
 }

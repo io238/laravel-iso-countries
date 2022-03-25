@@ -264,14 +264,14 @@ Illuminate\Support\Collection {
 If you already use ISO codes in your models, you can enrich them by casting them as Country/Language/Currency model:
 
 ```php
-use Io238\ISOCountries\Casts\CurrencyCast;
+use Io238\ISOCountries\Casts\Currency;
 
 class MyModel{
     
     // ...
 
     protected $casts = [
-        'currency' => CurrencyCast::class,
+        'currency' => Currency::class,
     ];
     
     // ...
