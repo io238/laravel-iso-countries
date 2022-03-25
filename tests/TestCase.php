@@ -3,6 +3,7 @@
 namespace Io238\ISOCountries\Tests;
 
 use CreateLaravelIsoCountriesTables;
+use Illuminate\Support\Facades\Artisan;
 use Io238\ISOCountries\Database\Seeders\IsoSeeder;
 use Io238\ISOCountries\ISOCountriesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -14,10 +15,7 @@ abstract class TestCase extends Orchestra {
     {
         parent::setUp();
 
-        include_once realpath(__DIR__ . '/../database/migrations/create_laravel_iso_countries_tables.php');
-        (new CreateLaravelIsoCountriesTables())->up();
-
-        $this->seed(IsoSeeder::class);
+        Artisan::call('countries:build');
     }
 
 
@@ -31,7 +29,7 @@ abstract class TestCase extends Orchestra {
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
+        config()->set('database.default', 'iso-countries');
     }
 
 }
