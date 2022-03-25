@@ -15,7 +15,7 @@ abstract class TestCase extends Orchestra {
     {
         parent::setUp();
 
-        Artisan::call('countries:build');
+        // Artisan::call('countries:build');
     }
 
 
