@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   test:
@@ -8,13 +8,17 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        php: [ 8.0, 8.1 ]
-        laravel: [ 9.* ]
+        os: [ ubuntu-latest, windows-latest ]
+        php: [ 8.1, 8.0, 7.4 ]
+        laravel: [ 9.*, 8.*, 7.* ]
         stability: [ prefer-stable ]
         include:
           - laravel: 9.*
             testbench: 7.*
+          - laravel: 8.*
+            testbench: 6.*
+          - laravel: 7.*
+            testbench: 5.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -28,7 +32,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
-          
+
       - name: Setup problem matchers
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
