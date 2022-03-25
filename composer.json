@@ -76,10 +76,10 @@
             ]
         },
         "copy-file": {
-            "vendor/components/flag-icon-css/flags": "data/flags/",
-            "vendor/umpirsky/country-list/data/#\\.php$": "data/translations/countries/",
-            "vendor/umpirsky/language-list/data/#\\.php$": "data/translations/languages/",
-            "vendor/umpirsky/currency-list/data/#\\.php$": "data/translations/currencies/"
+            "./vendor/components/flag-icon-css/flags": "data/flags/",
+            "./vendor/umpirsky/country-list/data/#\\.php$": "data/translations/countries/",
+            "./vendor/umpirsky/language-list/data/#\\.php$": "data/translations/languages/",
+            "./vendor/umpirsky/currency-list/data/#\\.php$": "data/translations/currencies/"
         }
     },
     "minimum-stability": "dev",
