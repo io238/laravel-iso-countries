@@ -30,9 +30,9 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "illuminate/contracts": "^8.0|^9.0",
-        "illuminate/database": "^8.0|^9.0",
-        "illuminate/support": "^8.0|^9.0",
+        "illuminate/contracts": "^7.0|^8.0|^9.0",
+        "illuminate/database": "^7.0|^8.0|^9.0",
+        "illuminate/support": "^7.0|^8.0|^9.0",
         "spatie/laravel-translatable": "^4.6|^5.0|^6.0",
         "slowprog/composer-copy-file": "^0.3",
         "components/flag-icon-css": "^3.5.0",
@@ -41,7 +41,7 @@
         "umpirsky/currency-list": "^v1.1.1"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0|^7.0",
+        "orchestra/testbench": "^5.0|^6.0|^7.0",
         "pestphp/pest": "^1.21"
     },
     "autoload": {
