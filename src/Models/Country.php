@@ -28,7 +28,7 @@ class Country extends BaseModel {
 
     public function neighbours()
     {
-        return $this->belongsToMany(Country::class, foreignPivotKey: 'country_id', relatedPivotKey: 'neighbour_id');
+        return $this->belongsToMany(Country::class, 'country_country', 'country_id', 'neighbour_id');
     }
 
 
