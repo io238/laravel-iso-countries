@@ -38,24 +38,22 @@ You can install the package via composer:
 composer require io238/laravel-iso-countries
 ```
 
+The latest version of this package requires PHP version 8.0 or above. If you need support for PHP 7.4, please install
+version 2 of this package.
+
 ### Migrations
 
-You can publish and run the migrations with:
+There is no need to run any migrations. All country data information is stored in a pre-compiled SQLITE database that is
+stored within this package.
 
-```bash
-php artisan vendor:publish --provider="Io238\ISOCountries\ISOCountriesServiceProvider" --tag="migrations"
-php artisan migrate
-```
+By default, this database includes all country/language/&currency names translated into English, German, French, and
+Spanish. If you want to compile your own database with other languages,
+please [see the instructions here](#data-updates--translations).
 
-The data is **automatically seeded** to the database at the end of the migration process.
+### Rebuilding the database
 
-### Data updates
-
-Country-level ISO data does not change very often. Nevertheless, if at any time you want to update the ISO data to the latest available version, you can manually re-seed the tables:
-
-```bash
-php artisan db:seed --force --class="Io238\ISOCountries\Database\Seeders\IsoSeeder"
-```
+Country-level ISO data does not change very often. Nevertheless, if at any time you want to update the ISO data to the
+latest available version, you can manually re-seed the tables:
 
 ### Config
 
@@ -70,18 +68,35 @@ In the config you can define, which translations of country/language/currency na
 This is the contents of the published config file:
 
 ```php
-return [
+[
+    // Supported locales for names (countries, languages, currencies)
     'locales' => [
         'en',
         'de',
         'fr',
         'es',
     ],
+
+    // Path for storing your own SQLITE database
+    'database_path' => database_path('iso-countries.sqlite'),
 ];
 ```
 
-After changing the config make sure to [re-seed the database](#data-updates) to reflect the changes.
+After making changes to the config you need to re-build the database with the following command:
 
+```bash
+php artisan db:seed countries:build
+```
+
+This will create a new SQLITE database and stores it in your project at `database/iso-countries.sqlite`. Exclude this
+file from `.gitignore` to have it available in all environments.
+
+```gitignore
+# database/.gitignore
+
+*.sqlite*
+!iso-countries.sqlite
+```
 
 ## Usage
 
@@ -92,7 +107,7 @@ Country::find('AD');
 
 Io238\ISOCountries\Models\Country {
      id: "AD",
-     alpha_3: "AND",
+     alpha3: "AND",
      name: "{"en":"Andorra","de":"Andorra","fr":"Andorre","es":"Andorra"}",
      native_name: "Andorra",
      capital: "Andorra la Vella",
@@ -105,7 +120,6 @@ Io238\ISOCountries\Models\Country {
      lon: 1.5,
      demonym: "Andorran",
      area: 468,
-     gini: null,
    }
 ```
 
@@ -239,10 +253,10 @@ config `app.locale` and `app.fallback_locale` are automatically included.
 // Set the app locale
 app()->setLocale('fr');
 
-// Retrieve the top 10 countries in Africa (by polulation):
+// Retrieve the top 10 countries in Africa (by population):
 Io238\ISOCountries\Models\Country::where('region', 'Africa')->orderByDesc('population')->limit(10)->pluck('name');
 
-// Country names will be returned in the app locale (fr = French)
+// Country names will be returned according to the app locale (fr = French)
 Illuminate\Support\Collection {
      all: [
        "Nigéria",
@@ -302,10 +316,6 @@ MyModel::first()->update(['currency' => Io238\ISOCountries\Models\Currency::find
 composer test
 ```
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
@@ -317,12 +327,12 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Martin](https://github.com/io238)
-- [All Contributors](../../contributors)
 - https://restcountries.com
 - https://github.com/umpirsky/country-list
 - https://github.com/umpirsky/language-list
 - https://github.com/umpirsky/currency-list
 - https://github.com/spatie/laravel-translatable
+- [All Contributors](../../contributors)
 
 ## License
 
