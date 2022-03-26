@@ -44,6 +44,10 @@ class Build extends Command {
      */
     public function handle()
     {
+        Country::unsetEventDispatcher();
+        Language::unsetEventDispatcher();
+        Currency::unsetEventDispatcher();
+
         $this->info('Reset DB file...');
         $this->resetDatabase();
 
@@ -173,7 +177,7 @@ class Build extends Command {
         $countries = collect(json_decode(file_get_contents(__DIR__ . '/../../data/restcountries-v2.json'), true));
 
         foreach ($countries as $country) {
-            Country::make([
+            Country::create([
                 'id'               => $country['alpha2Code'],
                 'alpha3'           => $country['alpha3Code'],
                 'numeric'          => $country['numericCode'],
@@ -191,7 +195,7 @@ class Build extends Command {
                 'population'       => $country['population'],
                 'is_independent'   => $country['independent'],
                 'is_eu_member'     => collect($country['regionalBlocs'] ?? [])->where('acronym', 'EU')->count(),
-            ])->saveQuietly();
+            ]);
 
             $this->relations->put($country['alpha2Code'], [
                 'borders'        => $country['borders'] ?? [],
@@ -225,7 +229,7 @@ class Build extends Command {
 
         foreach ($currencies as $code => $currency) {
 
-            Currency::make([
+            Currency::create([
                 'id'             => $code,
                 'name'           => $currency['name'],
                 'name_plural'    => $currency['name_plural'],
@@ -233,7 +237,7 @@ class Build extends Command {
                 'symbol_native'  => $currency['symbol_native'],
                 'decimal_digits' => $currency['decimal_digits'],
                 'rounding'       => $currency['rounding'],
-            ])->saveQuietly();
+            ]);
 
         }
 
@@ -251,7 +255,7 @@ class Build extends Command {
 
             $language = new Fluent($language);
 
-            Language::make([
+            Language::create([
                 'id'          => $language['639-1'],
                 'iso639_2'    => $language['639-2'],
                 'iso639_2b'   => $language['639-2/B'],
@@ -259,7 +263,7 @@ class Build extends Command {
                 'native_name' => $language['nativeName'],
                 'family'      => $language['family'],
                 'wiki_url'    => $language['wikiUrl'],
-            ])->saveQuietly();
+            ]);
         }
 
         unset($languages);
