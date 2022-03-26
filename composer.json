@@ -31,7 +31,7 @@
     "require": {
         "php": "^7.4",
         "illuminate/contracts": "^7.0|^8.0",
-        "illuminate/database": "^7.0|^8.0",
+        "illuminate/database": "^7.0|^8.40",
         "illuminate/support": "^7.0|^8.0",
         "spatie/laravel-translatable": "^4.6|^5.0|^6.0",
         "slowprog/composer-copy-file": "^0.3",
