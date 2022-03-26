@@ -10,12 +10,14 @@ it('can create a new country', function () {
 
     Country::unguard();
 
-    Country::query()->make([
+    Country::unsetEventDispatcher();
+
+    Country::query()->create([
         'id'      => 'XX',
         'alpha3'  => 'XXX',
         'numeric' => 999,
         'name'    => 'Test Country',
-    ])->saveQuietly();
+    ]);
 
     $this->assertDatabaseHas('countries', ['id' => 'XX']);
 
@@ -26,12 +28,14 @@ it('can create a new language', function () {
 
     Language::unguard();
 
-    Language::query()->make([
+    Language::unsetEventDispatcher();
+
+    Language::query()->create([
         'id'          => 'xx',
         'iso639_2'    => 'xxx',
         'name'        => 'Test Language',
         'native_name' => 'Test Language',
-    ])->saveQuietly();
+    ]);
 
     $this->assertDatabaseHas('languages', ['id' => 'xx']);
 
@@ -42,13 +46,15 @@ it('can create a new currency', function () {
 
     Currency::unguard();
 
-    Currency::query()->make([
+    Currency::unsetEventDispatcher();
+
+    Currency::query()->create([
         'id'            => 'XXX',
         'name'          => 'Test Currency',
         'name_plural'   => 'Test Currencies',
         'symbol'        => '✗',
         'symbol_native' => '✗',
-    ])->saveQuietly();
+    ]);
 
     $this->assertDatabaseHas('currencies', ['id' => 'XXX']);
 
