@@ -10,3 +10,5 @@ phpunit.xml
 psalm.xml
 vendor
 node_modules
+data/flags
+data/translations
