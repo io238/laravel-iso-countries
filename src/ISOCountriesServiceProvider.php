@@ -2,11 +2,16 @@
 
 namespace Io238\ISOCountries;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Io238\ISOCountries\Commands\Build;
+use Io238\ISOCountries\Models\Country;
+use Io238\ISOCountries\Models\Currency;
+use Io238\ISOCountries\Models\Language;
 
 
-class ISOCountriesServiceProvider extends ServiceProvider {
+class ISOCountriesServiceProvider extends ServiceProvider
+{
 
     static string $packageDatabaseFile = __DIR__ . '/../data/iso-countries.sqlite';
 
@@ -21,10 +26,9 @@ class ISOCountriesServiceProvider extends ServiceProvider {
                 'driver'   => 'sqlite',
                 'database' => realpath(config('iso-countries.database_path')),
             ]);
-        }
-        else {
+        } else {
             // Create empty Sqlite DB, if it does not exist yet
-            if ( ! file_exists(static::getPackageDatabaseFile())) {
+            if (! file_exists(static::getPackageDatabaseFile())) {
                 file_put_contents(static::getPackageDatabaseFile(), '');
             }
 
@@ -50,6 +54,12 @@ class ISOCountriesServiceProvider extends ServiceProvider {
         $this->commands([
             Build::class,
         ]);
+
+        $loader = AliasLoader::getInstance();
+
+        $loader->alias('IsoCountry', Country::class);
+        $loader->alias('IsoLanguage', Language::class);
+        $loader->alias('IsoCurrency', Currency::class);
     }
 
 
