@@ -13,7 +13,7 @@ use Io238\ISOCountries\Models\Currency;
 use Io238\ISOCountries\Models\Language;
 
 
-class Build extends Command {
+class BuildIsoDatabaseCommand extends Command {
 
     /**
      * The name and signature of the console command.
@@ -27,7 +27,7 @@ class Build extends Command {
      *
      * @var string
      */
-    protected $description = 'Build Sqlite database with ISO country information in all configured translations.';
+    protected $description = 'Build database with ISO country information with all configured translations.';
 
     /**
      * Temporary storage for model relationships.

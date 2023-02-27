@@ -4,7 +4,7 @@ namespace Io238\ISOCountries;
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use Io238\ISOCountries\Commands\Build;
+use Io238\ISOCountries\Commands\BuildIsoDatabaseCommand;
 use Io238\ISOCountries\Models\Country;
 use Io238\ISOCountries\Models\Currency;
 use Io238\ISOCountries\Models\Language;
@@ -52,7 +52,7 @@ class ISOCountriesServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/iso-countries.php', 'iso-countries');
 
         $this->commands([
-            Build::class,
+            BuildIsoDatabaseCommand::class,
         ]);
 
         $loader = AliasLoader::getInstance();
