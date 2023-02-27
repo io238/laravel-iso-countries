@@ -2,8 +2,11 @@
 
 namespace Io238\ISOCountries\Models;
 
-class Country extends BaseModel {
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+class Country extends BaseModel
+{
     protected $casts = [
         'borders'        => 'array',
         'currency_codes' => 'array',
@@ -13,28 +16,23 @@ class Country extends BaseModel {
         'is_eu_member'   => 'boolean',
     ];
 
-
-    public function languages()
+    public function languages(): BelongsToMany
     {
         return $this->belongsToMany(Language::class);
     }
 
-
-    public function currencies()
+    public function currencies(): BelongsToMany
     {
         return $this->belongsToMany(Currency::class);
     }
 
-
-    public function neighbours()
+    public function neighbours(): BelongsToMany
     {
         return $this->belongsToMany(Country::class, 'country_country', 'country_id', 'neighbour_id');
     }
 
-
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         return parent::resolveRouteBinding(strtoupper($value), $field);
     }
-
 }

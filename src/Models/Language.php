@@ -2,16 +2,18 @@
 
 namespace Io238\ISOCountries\Models;
 
-class Language extends BaseModel {
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-    public function countries()
+class Language extends BaseModel
+{
+    public function countries(): BelongsToMany
     {
         return $this->belongsToMany(Country::class);
     }
 
-    public function resolveRouteBinding($value, $field = null)
+    public function resolveRouteBinding($value, $field = null): ?Model
     {
         return parent::resolveRouteBinding(strtolower($value), $field);
     }
-
 }
