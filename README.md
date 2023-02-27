@@ -85,7 +85,7 @@ This is the contents of the published config file:
 After making changes to the config you need to re-build the database with the following command:
 
 ```bash
-php artisan db:seed countries:build
+php artisan countries:build
 ```
 
 This will create a new SQLITE database and stores it in your project at `database/iso-countries.sqlite`. Exclude this
