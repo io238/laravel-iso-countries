@@ -7,7 +7,6 @@ use Io238\ISOCountries\Models\Language;
 
 
 it('can create a new country', function () {
-
     Country::unguard();
 
     Country::unsetEventDispatcher();
@@ -25,7 +24,6 @@ it('can create a new country', function () {
 });
 
 it('can create a new language', function () {
-
     Language::unguard();
 
     Language::unsetEventDispatcher();
@@ -43,7 +41,6 @@ it('can create a new language', function () {
 });
 
 it('can create a new currency', function () {
-
     Currency::unguard();
 
     Currency::unsetEventDispatcher();
@@ -62,7 +59,6 @@ it('can create a new currency', function () {
 });
 
 it('prevents updates to ISO data via Eloquent methods', function () {
-
     Country::unguard();
 
     $original = Country::find('US')->toArray();
@@ -78,19 +74,15 @@ it('prevents updates to ISO data via Eloquent methods', function () {
     $country->save();
 
     expect(Country::find('US')->toArray())->toBe($original);
-
 });
 
 it('prevents deletion of ISO data via Eloquent methods', function () {
-
     Country::find('US')->delete();
 
     expect(Country::find('US'))->not->toBeNull();
-
 });
 
 it('can eager load relations', function () {
-
     $country = Country::find('MX');
 
     expect($country->getRelations())->toBeEmpty();
@@ -104,5 +96,4 @@ it('can eager load relations', function () {
     expect($country->getRelations()['currencies']->count())->toBeGreaterThan(0);
     expect($country->getRelations()['languages']->count())->toBeGreaterThan(0);
     expect($country->getRelations()['neighbours']->count())->toBeGreaterThan(0);
-
 });
