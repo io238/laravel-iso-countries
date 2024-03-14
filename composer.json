@@ -1,7 +1,7 @@
 {
-    "name": "io238/laravel-iso-countries",
-    "description": "Ready-to-use Laravel models and relations for country (ISO 3166),  language (ISO 639-1), and currency (ISO 4217) information with multi-language support.",
-    "keywords": [
+    "name"             : "io238/laravel-iso-countries",
+    "description"      : "Ready-to-use Laravel models and relations for country (ISO 3166),  language (ISO 639-1), and currency (ISO 4217) information with multi-language support.",
+    "keywords"         : [
         "laravel",
         "country-codes",
         "languages",
@@ -18,70 +18,70 @@
         "iso639-1",
         "iso4217"
     ],
-    "homepage": "https://github.com/io238/laravel-iso-countries",
-    "license": "MIT",
-    "authors": [
+    "homepage"         : "https://github.com/io238/laravel-iso-countries",
+    "license"          : "MIT",
+    "authors"          : [
         {
-            "name": "Martin",
-            "email": "martin@io238.eu",
+            "name"    : "Martin",
+            "email"   : "martin@io238.eu",
             "homepage": "https://io238.eu",
-            "role": "Developer"
+            "role"    : "Developer"
         }
     ],
-    "require": {
-        "php": "^8.1",
-        "illuminate/contracts": "^7.0|^8.40|^9.0|^10.0",
-        "illuminate/database": "^7.0|^8.40|^9.0|^10.0",
-        "illuminate/support": "^7.0|^8.40|^9.0|^10.0",
+    "require"          : {
+        "php"                        : "^8.2",
+        "illuminate/contracts"       : "^7.0|^8.40|^9.0|^10.0|^11.0",
+        "illuminate/database"        : "^7.0|^8.40|^9.0|^10.0|^11.0",
+        "illuminate/support"         : "^7.0|^8.40|^9.0|^10.0|^11.0",
         "spatie/laravel-translatable": "^4.6|^5.0|^6.0",
         "slowprog/composer-copy-file": "^0.3",
-        "components/flag-icon-css": "^3.5.0",
-        "umpirsky/country-list": "^2.0.6",
-        "umpirsky/language-list": "^v1.1",
-        "umpirsky/currency-list": "^v1.1.1"
+        "components/flag-icon-css"   : "^3.5.0",
+        "umpirsky/country-list"      : "^2.0.6",
+        "umpirsky/language-list"     : "^v1.1",
+        "umpirsky/currency-list"     : "^v1.1.1"
     },
-    "require-dev": {
-        "orchestra/testbench": "^5.0|^6.0|^7.0",
-        "pestphp/pest": "^1.21"
+    "require-dev"      : {
+        "orchestra/testbench": "^5.0|^6.0|^7.0|^8.0|^9.0",
+        "pestphp/pest"       : "^1.21"
     },
-    "autoload": {
+    "autoload"         : {
         "psr-4": {
             "Io238\\ISOCountries\\": "src"
         }
     },
-    "autoload-dev": {
+    "autoload-dev"     : {
         "psr-4": {
             "Io238\\ISOCountries\\Tests\\": "tests"
         }
     },
-    "scripts": {
-        "test": "./vendor/bin/pest",
+    "scripts"          : {
+        "test"            : "./vendor/bin/pest",
         "post-install-cmd": [
             "SlowProg\\CopyFile\\ScriptHandler::copy"
         ],
-        "post-update-cmd": [
+        "post-update-cmd" : [
             "SlowProg\\CopyFile\\ScriptHandler::copy"
         ]
     },
-    "config": {
+    "config"           : {
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
     },
-    "extra": {
-        "laravel": {
+    "extra"            : {
+        "laravel"  : {
             "providers": [
                 "Io238\\ISOCountries\\ISOCountriesServiceProvider"
             ]
         },
         "copy-file": {
-            "./vendor/components/flag-icon-css/flags": "data/flags/",
-            "./vendor/umpirsky/country-list/data/#\\.php$": "data/translations/countries/",
+            "./vendor/components/flag-icon-css/flags"      : "data/flags/",
+            "./vendor/umpirsky/country-list/data/#\\.php$" : "data/translations/countries/",
             "./vendor/umpirsky/language-list/data/#\\.php$": "data/translations/languages/",
             "./vendor/umpirsky/currency-list/data/#\\.php$": "data/translations/currencies/"
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable"    : true
 }
