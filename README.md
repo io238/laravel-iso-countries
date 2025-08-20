@@ -326,7 +326,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Martin](https://github.com/io238)
+- [io238](https://github.com/io238)
+- [azakhozhiy](https://github.com/azakhozhiy)
 - https://restcountries.com
 - https://github.com/umpirsky/country-list
 - https://github.com/umpirsky/language-list
