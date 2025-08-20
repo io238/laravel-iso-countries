@@ -5,6 +5,8 @@ namespace Io238\ISOCountries;
 use Illuminate\Support\ServiceProvider;
 use Io238\ISOCountries\Commands\Build;
 
+use Io238\ISOCountries\Exceptions\MissingSqliteExtensionException;
+
 
 class ISOCountriesServiceProvider extends ServiceProvider {
 
@@ -13,6 +15,10 @@ class ISOCountriesServiceProvider extends ServiceProvider {
 
     public function boot()
     {
+        // Prüfe, ob die SQLite-Erweiterung geladen ist
+        if (!extension_loaded('pdo_sqlite')) {
+            throw new MissingSqliteExtensionException();
+        }
         // Create custom database connection
 
         // Use Sqlite database path from config, if it exists
