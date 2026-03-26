@@ -38,8 +38,22 @@ You can install the package via composer:
 composer require io238/laravel-iso-countries
 ```
 
-The latest version of this package requires PHP version 8.0 or above. If you need support for PHP 7.4, please install
-version 2 of this package.
+### Version support
+
+| Package version | Laravel versions | PHP versions |
+| --- | --- | --- |
+| `1.4.x` | `8` to `13` | `8.1+` |
+| `1.3.x` | `8` to `12` | `8.1+` |
+| `1.2.x` | `7` to `10` | `8.1+` |
+| `1.1.3` | `7` to `9` | `7.4+` |
+| `1.0.0` to `1.1.2` | `8` | `7.4+` |
+| `0.2.x` | `8` | `7.4+` |
+
+Notes:
+
+- The package's own minimum PHP version is shown above, but newer Laravel versions may require a higher PHP version.
+- In practice that means Laravel `12` requires PHP `8.2+`, and Laravel `13` requires PHP `8.3+`.
+- Older `1.2.x` and `1.1.x` releases include Laravel `7` in their composer constraints. `1.3.x` and later only verify Laravel `8+` in CI.
 
 ### Migrations
 
