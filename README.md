@@ -53,7 +53,7 @@ Notes:
 
 - The package's own minimum PHP version is shown above, but newer Laravel versions may require a higher PHP version.
 - In practice that means Laravel `12` requires PHP `8.2+`, and Laravel `13` requires PHP `8.3+`.
-- Older `1.2.x` and `1.1.x` releases include Laravel `7` in their composer constraints. The current `1.3.x` and upcoming `1.4.x` lines only verify Laravel `8+` in CI.
+- Older `1.2.x` and `1.1.x` releases include Laravel `7` in their composer constraints. `1.3.x` and later only verify Laravel `8+` in CI.
 
 ### Migrations
 
