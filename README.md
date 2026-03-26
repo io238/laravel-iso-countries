@@ -1,5 +1,17 @@
 # Laravel ISO Countries
 
+> This fork appears to no longer be needed.
+>
+> The original package, [`io238/laravel-iso-countries`](https://github.com/io238/laravel-iso-countries), now supports Laravel 11, 12, and 13, which covers the original compatibility gap this fork addressed.
+>
+> To help avoid fragmentation around unmaintained forks, new users should prefer the original package:
+>
+> ```bash
+> composer require io238/laravel-iso-countries
+> ```
+>
+> If this fork is no longer being maintained, it may be worth deprecating it on Packagist and pointing users back to the upstream package.
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/io238/laravel-iso-countries.svg?label=Version)](https://packagist.org/packages/io238/laravel-iso-countries)
 [![GitHub Tests Action Status](https://github.com/io238/laravel-iso-countries/workflows/Tests/badge.svg?branch=main)](https://github.com/io238/laravel-iso-countries/actions?query=workflow%3ATests+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/io238/laravel-iso-countries.svg?label=Downloads)](https://packagist.org/packages/io238/laravel-iso-countries)
